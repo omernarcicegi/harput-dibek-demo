@@ -1,0 +1,112 @@
+{
+  "kaynak": "Openverse (https://openverse.org) araciligiyla bulundu",
+  "lisans_politikasi": "Tum gorseller CC0 veya kamu mali (public domain). Atif zorunlulugu yoktur; izlenebilirlik icin kaydedilmistir.",
+  "not": "Burada listelenmeyen gorseller ilk tarama turunda yine CC0 filtresiyle secilmistir.",
+  "gorseller": [
+    {
+      "dosya": "public/images/gallery-2.webp",
+      "baslik": "Busy coffee shop & cafe",
+      "ureten": null,
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/6113061/busy-coffee-shop-cafe-unknown-date-location"
+    },
+    {
+      "dosya": "public/images/gallery-4.webp",
+      "baslik": "Free chocolate cake slice plate",
+      "ureten": null,
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/5924587/photo-image-background-public-domain-table"
+    },
+    {
+      "dosya": "public/images/menu/buzlu-americano.webp",
+      "baslik": "Free iced black coffee saucer",
+      "ureten": null,
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/5927781/photo-image-public-domain-gold-wooden"
+    },
+    {
+      "dosya": "public/images/menu/cortado.webp",
+      "baslik": "A Cortado with heart-shaped latte art on a wooden table, served in a glass cup on a saucer with a spoon.",
+      "ureten": "Manjil Aryal",
+      "lisans": "cc0",
+      "kaynak": "https://wordpress.org/photos/photo/9196a1515b/"
+    },
+    {
+      "dosya": "public/images/menu/espresso.webp",
+      "baslik": "Espresso with Whipped Topping in White Cup on Saucer",
+      "ureten": "Image Catalog",
+      "lisans": "cc0",
+      "kaynak": "https://www.flickr.com/photos/132795455@N08/18205822279"
+    },
+    {
+      "dosya": "public/images/menu/filtre-kahve.webp",
+      "baslik": "A coffee being brewed on a V60 brewer",
+      "ureten": "Hardeep Asrani",
+      "lisans": "cc0",
+      "kaynak": "https://wordpress.org/photos/photo/21065c2f63/"
+    },
+    {
+      "dosya": "public/images/menu/granola-kase.webp",
+      "baslik": "Free bowl cereal, oatmeal, granola",
+      "ureten": null,
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/5920797/photo-image-public-domain-free-breakfast"
+    },
+    {
+      "dosya": "public/images/menu/havuclu-kek.webp",
+      "baslik": "Carrot Cake",
+      "ureten": "Lisa Fotios",
+      "lisans": "cc0",
+      "kaynak": "https://stocksnap.io/photo/carrot-cake-A48UPBB6XM"
+    },
+    {
+      "dosya": "public/images/menu/ice-latte.webp",
+      "baslik": "macro view cup latte straw",
+      "ureten": null,
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/3283217/free-photo-image-ice-coffee-cafe-beverage"
+    },
+    {
+      "dosya": "public/images/menu/limonata.webp",
+      "baslik": "Glass of homemade cucumber lemonade",
+      "ureten": "Jakub Kapusnak",
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/447809/free-photo-image-lemonade-photography-beverage"
+    },
+    {
+      "dosya": "public/images/menu/matcha-latte.webp",
+      "baslik": "A tall glass with a purple straw holds a layered green and white drink, a matcha latte. Next to it is a white plate with an Asian dish of stir-fried meat and vegetables in a red sauce, garnished with sprouts.",
+      "ureten": "Alina Kakshapati",
+      "lisans": "cc0",
+      "kaynak": "https://wordpress.org/photos/photo/56068aab06/"
+    },
+    {
+      "dosya": "public/images/menu/peynir-tabagi.webp",
+      "baslik": "Summer Cheese Platter",
+      "ureten": null,
+      "lisans": "cc0",
+      "kaynak": "https://www.rawpixel.com/image/3282990/free-photo-image-food-dinner-antipasto"
+    },
+    {
+      "dosya": "public/images/menu/sicak-cikolata.webp",
+      "baslik": "Hot Chocolate",
+      "ureten": "Tim Sullivan",
+      "lisans": "cc0",
+      "kaynak": "https://stocksnap.io/photo/hot-chocolate-NOXXUWUBGJ"
+    },
+    {
+      "dosya": "public/images/menu/tiramisu.webp",
+      "baslik": "Tiramisu Dessert",
+      "ureten": "Michal Kulesza",
+      "lisans": "cc0",
+      "kaynak": "https://stocksnap.io/photo/tiramisu-dessert-32X9HJRG2N"
+    },
+    {
+      "dosya": "public/images/menu/turk-kahvesi.webp",
+      "baslik": "Coffee Cup",
+      "ureten": "Travel Coffee Book",
+      "lisans": "cc0",
+      "kaynak": "https://stocksnap.io/photo/coffee-cup-3F1F16DEA8"
+    }
+  ]
+}

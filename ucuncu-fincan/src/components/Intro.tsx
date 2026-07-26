@@ -1,12 +1,25 @@
-// Açılış perdesi: logo belirir, altındaki fincan kahveyle dolar, sonra siteye geçilir.
-// Toplam süre 1160 ms (kabul kriteri: 1,2 sn'yi geçmemeli).
+// Açılış perdesi: koyu zemine yukarıdan kahve dökülür, akıntı ekranı basar
+// ve perde kalkarak siteyi açar.
+//
+// Toplam süre 1120 ms (kabul kriteri: 1,2 sn'yi geçmemeli).
+// Tüm hareketler yalnızca transform ve opacity ile yapılır.
 
 import { useEffect, useState } from 'react';
 import { brand } from '../config/brand';
 import { usePrefersReducedMotion } from '../lib/motion';
 
 const INTRO_SEEN_KEY = 'cafe.introSeen';
-const INTRO_DURATION_MS = 1160;
+const INTRO_DURATION_MS = 1120;
+
+/** Akıntının çevresine saçılan damlacıklar: [sol%, üst%, çap(px), gecikme(ms)] */
+const DROPLETS: [number, number, number, number][] = [
+  [38, 34, 10, 240],
+  [63, 30, 7, 300],
+  [33, 52, 6, 340],
+  [68, 56, 9, 280],
+  [42, 66, 5, 380],
+  [59, 70, 7, 420],
+];
 
 /** sessionStorage kapalıysa (özel mod) uygulama çökmemeli. */
 function hasSeenIntro(): boolean {
@@ -61,31 +74,63 @@ export function Intro({ onDone }: IntroProps) {
 
   return (
     <div
-      className="intro-curtain fixed inset-0 z-100 flex flex-col items-center justify-center gap-6 bg-page px-6"
+      className="intro-curtain fixed inset-0 z-100 overflow-hidden"
+      // Renk yapılandırmadan gelir; perde iki temada da koyu kalır.
+      style={{ backgroundColor: brand.intro.curtainBg }}
       // Ekran okuyucu perdeyi okumasın; asıl içerik zaten arkada.
       aria-hidden="true"
     >
-      <img
-        src={brand.logo.small}
-        alt=""
-        width={320}
-        height={320}
-        className="intro-name h-24 w-24 rounded-full"
-      />
+      {/*
+        Dökülen akıntı. Ekranın ortasında dar bir şerit olarak başlar,
+        aşağı doğru uzar, sonra yanlara taşarak ekranı basar.
+      */}
+      <svg
+        className="pour-stream absolute inset-y-0 left-1/2 h-full w-16 -translate-x-1/2 text-gold"
+        viewBox="0 0 64 400"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M32 0 C20 60, 44 110, 32 165 C20 220, 44 275, 32 330 C26 360, 30 380, 32 400"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="22"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
 
-      <h1 className="intro-name text-center text-[clamp(2.5rem,13vw,5rem)] text-ink">
-        {brand.name}
-      </h1>
+      {/* Sıçrayan damlacıklar */}
+      {DROPLETS.map(([left, top, size, delay]) => (
+        <span
+          key={`${left}-${top}`}
+          className="intro-droplet absolute rounded-full bg-gold"
+          style={{
+            left: `${left}%`,
+            top: `${top}%`,
+            width: size,
+            height: size,
+            animationDelay: `${delay}ms`,
+          }}
+        />
+      ))}
 
-      {/* Dolan fincan */}
-      <div className="intro-tagline relative flex items-end">
-        <span className="absolute -right-3 top-3 h-6 w-6 rounded-full border-[3px] border-ink/40" />
-        <div className="relative h-[52px] w-[42px] overflow-hidden rounded-b-[18px] rounded-t-[4px] border-[3px] border-ink/40">
-          <div className="coffee-pour absolute inset-x-0 bottom-0 h-full bg-gold" />
-        </div>
+      {/* Logo ve kafe adı akıntının önünde durur. */}
+      <div
+        className="intro-content relative flex h-full flex-col items-center justify-center gap-4 px-6"
+        style={{ color: brand.intro.curtainInk }}
+      >
+        <img
+          src={brand.logo.small}
+          alt=""
+          width={320}
+          height={320}
+          className="intro-name h-24 w-24 rounded-full shadow-2xl"
+        />
+        <h1 className="intro-name text-center text-[clamp(2.25rem,12vw,4.5rem)]">
+          {brand.name}
+        </h1>
+        <p className="intro-tagline font-accent text-lg italic">{brand.nameAccent}</p>
       </div>
-
-      <p className="intro-tagline font-accent text-lg text-accent italic">{brand.nameAccent}</p>
     </div>
   );
 }

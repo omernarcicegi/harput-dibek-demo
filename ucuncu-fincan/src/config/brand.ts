@@ -93,6 +93,14 @@ export const brand = {
     accent: "'Playfair Display', Georgia, serif",
   },
 
+  // --- Açılış perdesi ------------------------------------------------------
+  // Perde iki temada da koyudur: dökülen altın akıntı ancak koyu zeminde
+  // görünür. Bu yüzden tema paletinden değil buradan okunur.
+  intro: {
+    curtainBg: '#1A120C',
+    curtainInk: '#FFF3D6',
+  },
+
   // --- Hero ----------------------------------------------------------------
   hero: {
     image: '/images/hero.webp',

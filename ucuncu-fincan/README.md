@@ -26,7 +26,7 @@ mobil öncelikli bir demo kafe sitesi ve sahte verili yönetim paneli.
 | Menü | **152 ürün**, 4 kategori, 17 alt başlık — gerçek menüden |
 | Ürün görselleri | 152 adet, markanın kendi fotoğrafları |
 | Tema | Açık + **koyu mod**, cihaz tercihine uyar, düğmeyle değişir |
-| Animasyon | Kaydırınca dolan kahve fincanı, açılışta dolum, panel dalgası |
+| Animasyon | Açılışta dökülen kahve perdesi, kaydırınca dolan fincan, panel dalgası |
 | Bölümler | Hero, 3 hikâye paneli, menü, hakkımızda, **tarihçe**, **sosyal medya**, iletişim |
 
 ---
@@ -106,8 +106,8 @@ açıkken kapanır.
 
 | Animasyon | Nerede |
 |---|---|
+| **Dökülen kahve perdesi** | Açılışta: koyu zemine altın akıntı iner → ekranı basar → perde kalkar (1120 ms) |
 | Kahve dolan fincan | Sayfanın üstünde, kaydırma ilerlemesini gösterir |
-| Fincan dolumu | Açılış perdesinde (toplam 1160 ms) |
 | Kahve dalgası | Hikâye panelleri görünüme girdiğinde alttan yükselir |
 | Sıralı belirme | Kart gruplarında 70 ms aralıkla |
 | Yapışkan yığılma | Hikâye panelleri üst üste kayar |

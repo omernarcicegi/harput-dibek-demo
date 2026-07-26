@@ -2,6 +2,7 @@
 
 import { brand } from '../config/brand';
 import { Reveal } from '../lib/motion';
+import { asset } from '../lib/asset';
 
 export function AboutSection() {
   return (
@@ -18,7 +19,7 @@ export function AboutSection() {
         {brand.about.gallery.map((photo, index) => (
           <Reveal key={photo.image} index={index}>
             <img
-              src={photo.image}
+              src={asset(photo.image)}
               alt={photo.alt}
               width={512}
               height={512}

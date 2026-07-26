@@ -10,6 +10,7 @@
 import { useEffect, useState } from 'react';
 import { brand } from '../config/brand';
 import { usePrefersReducedMotion } from '../lib/motion';
+import { asset } from '../lib/asset';
 
 const INTRO_SEEN_KEY = 'cafe.introSeen';
 
@@ -134,7 +135,7 @@ export function Intro({ onDone }: IntroProps) {
         style={{ color: brand.intro.curtainInk }}
       >
         <img
-          src={brand.logo.small}
+          src={asset(brand.logo.small)}
           alt=""
           width={320}
           height={320}

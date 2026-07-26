@@ -2,6 +2,7 @@
 
 import { brand } from '../config/brand';
 import { scrollToSection } from '../lib/scroll';
+import { asset } from '../lib/asset';
 
 export function Hero() {
   return (
@@ -10,7 +11,7 @@ export function Hero() {
       aria-label={`${brand.name} açılış`}
     >
       <img
-        src={brand.hero.image}
+        src={asset(brand.hero.image)}
         alt={brand.hero.imageAlt}
         width={1080}
         height={1440}
@@ -29,7 +30,7 @@ export function Hero() {
 
       <div className="relative px-5 pb-32 sm:px-8 md:pb-36">
         <img
-          src={brand.logo.small}
+          src={asset(brand.logo.small)}
           alt={brand.logo.alt}
           width={320}
           height={320}

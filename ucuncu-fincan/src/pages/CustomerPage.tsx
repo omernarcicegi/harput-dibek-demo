@@ -12,6 +12,7 @@ import { AboutSection } from '../sections/AboutSection';
 import { HistorySection } from '../sections/HistorySection';
 import { SocialSection } from '../sections/SocialSection';
 import { ContactSection } from '../sections/ContactSection';
+import { asset } from '../lib/asset';
 
 export default function CustomerPage() {
   const { showIntro, dismissIntro } = useIntro();
@@ -34,7 +35,7 @@ export default function CustomerPage() {
 
         <footer className="bg-surface px-5 py-10 text-center sm:px-8">
           <img
-            src={brand.logo.small}
+            src={asset(brand.logo.small)}
             alt={brand.logo.alt}
             width={320}
             height={320}

@@ -6,6 +6,7 @@
 
 import { brand } from '../config/brand';
 import { Reveal } from '../lib/motion';
+import { asset } from '../lib/asset';
 
 export function StoryPanels() {
   return (
@@ -17,7 +18,7 @@ export function StoryPanels() {
           aria-label={panel.title}
         >
           <img
-            src={panel.image}
+            src={asset(panel.image)}
             alt={panel.imageAlt}
             width={1080}
             height={1440}

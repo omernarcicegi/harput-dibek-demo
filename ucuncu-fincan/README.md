@@ -54,24 +54,36 @@ Telefondan denemek için `npm run dev -- --host` çalıştırıp terminalde gör
 
 ## Yayına Alma
 
+**Canlı adres: https://omernarcicegi.github.io/harput-dibek-demo/**
+
 Statik bir sitedir; sunucu ve veritabanı gerekmez.
 
-### Vercel
+### Güncelleme (GitHub Pages)
 
 ```bash
-npm i -g vercel
-vercel          # ilk seferde projeyi oluşturur
-vercel --prod
+npm run deploy      # derler ve gh-pages dalına gönderir
 ```
 
-`vercel.json` içindeki rewrite kuralı sayesinde `/admin` ve `/qr` adresleri
-doğrudan açıldığında da çalışır. Yazı tipi ve görseller için uzun süreli
-önbellek başlıkları da aynı dosyadadır.
+`npm run deploy` şunları yapar: alt dizin tabanıyla derler
+(`--base=/harput-dibek-demo/`), SPA geri dönüşü için `404.html` üretir ve
+`dist/` klasörünü `gh-pages` dalına gönderir. Pages o dalı sunar.
 
-### Netlify
+> GitHub Pages HTML'i ~10 dakika önbelleğe alır. Yayından hemen sonra
+> değişikliği görmüyorsan sert yenile (Cmd+Shift+R) ya da adrese `?v=1` ekle.
 
-`public/_redirects` aynı yönlendirmeyi Netlify için sağlar.
-Derleme komutu `npm run build`, yayın klasörü `dist`.
+Her `git push` sonrası otomatik yayın istersen `docs/OTOMATIK-YAYIN.md`.
+
+### Başka bir yere taşımak
+
+Site kökte de alt dizinde de çalışır — görsel yolları `src/lib/asset.ts`
+üzerinden taban yola göre çözülür, router da taban yolu tanır.
+
+**Vercel:** `npm i -g vercel && vercel --prod`. `vercel.json` içindeki rewrite
+sayesinde `/admin` ve `/qr` doğrudan açılır. Kökte sunulduğu için
+`npm run build` (base `/`) yeterli.
+
+**Netlify:** `public/_redirects` aynı yönlendirmeyi sağlar. Derleme komutu
+`npm run build`, yayın klasörü `dist`.
 
 ### Yayından sonra
 
@@ -280,8 +292,9 @@ Lighthouse 12, mobil profil):
 
 | Ölçüm | Değer |
 |---|---|
-| Lighthouse mobil — Performance | **92** |
+| Lighthouse mobil — Performance | **94** (canlı sitede ölçüldü) |
 | Lighthouse mobil — Accessibility | **100** |
+| Lighthouse mobil — Best Practices / SEO | **100 / 100** |
 | Cumulative Layout Shift | 0 |
 | Total Blocking Time | 0 ms |
 | Düşük kontrastlı metin (iki temada, 8 konumda) | **0** |

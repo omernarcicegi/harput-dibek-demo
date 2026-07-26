@@ -9,6 +9,7 @@ import { selectCategories, selectItemsByCategory } from '../stores/menuStore';
 import { useMenu } from '../stores/hooks';
 import { BottomSheet } from '../components/BottomSheet';
 import type { ItemBadge, MenuItem } from '../types';
+import { asset } from '../lib/asset';
 
 const BADGE_STYLES: Record<ItemBadge, string> = {
   yeni: 'bg-gold text-on-gold',
@@ -158,7 +159,7 @@ export function MenuSection() {
                     >
                       <div className="relative">
                         <img
-                          src={item.imageUrl}
+                          src={asset(item.imageUrl)}
                           alt={item.name}
                           width={480}
                           height={480}
@@ -210,7 +211,7 @@ export function MenuSection() {
         {liveSelectedItem && (
           <div className="px-5 pb-2">
             <img
-              src={liveSelectedItem.imageUrl}
+              src={asset(liveSelectedItem.imageUrl)}
               alt={liveSelectedItem.name}
               width={480}
               height={480}

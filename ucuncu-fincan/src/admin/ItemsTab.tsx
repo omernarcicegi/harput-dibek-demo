@@ -8,6 +8,7 @@ import { menuActions, selectCategories, selectItemsByCategory } from '../stores/
 import { useMenu } from '../stores/hooks';
 import type { ItemBadge, MenuItem } from '../types';
 import { Button, Field, IconButton, Select, TextArea, TextInput } from './fields';
+import { asset } from '../lib/asset';
 
 /** Projeye gömülü görsellerin listesi; admin bunlar arasından seçer. */
 const BUNDLED_IMAGES = Array.from(
@@ -291,7 +292,7 @@ export function ItemsTab() {
             className="flex items-start gap-3 rounded-2xl border border-line bg-surface p-3"
           >
             <img
-              src={item.imageUrl}
+              src={asset(item.imageUrl)}
               alt=""
               width={600}
               height={450}

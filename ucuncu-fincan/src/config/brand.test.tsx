@@ -61,6 +61,12 @@ function collectSourceFiles(directory: string): string[] {
     // Yapılandırmanın kendisi ve testler hariç.
     if (entry.includes('.test.')) continue;
     if (fullPath.endsWith(join('config', 'brand.ts'))) continue;
+    /*
+      Demo menü verisi hariç: ürün adlarının markayı içermesi doğaldır
+      ("Harput Dibek Kahvesi" bir üründür). Bu testin amacı BİLEŞENLERDE
+      gömülü marka metni olmamasıdır, içerik dosyalarında değil.
+    */
+    if (fullPath.endsWith(join('data', 'seed.ts'))) continue;
     collected.push(fullPath);
   }
   return collected;
@@ -74,8 +80,9 @@ describe('bileşenlerde gömülü marka metni yok', () => {
   });
 
   it('hiçbir bileşende yer tutucu kafe adı geçmez', () => {
-    // Not: mock edilen ad değil, brand.ts'teki GERÇEK yer tutucu ad aranır.
-    const placeholderName = 'Üçüncü Fincan';
+    // Mock edilen ad değil, brand.ts'teki GERÇEK ad aranır.
+    // Sabit yazmak yerine yapılandırmadan okunur; marka değişince test de takip eder.
+    const placeholderName = realBrand.name;
     const offenders = files.filter((file) =>
       readFileSync(file, 'utf8').includes(placeholderName),
     );
@@ -94,7 +101,7 @@ describe('bileşenlerde gömülü marka metni yok', () => {
   it('hiçbir bileşende renk paleti sabit kodlanmamış', () => {
     // Renkler yalnızca brand.ts'te; bileşenler Tailwind token'larını kullanır.
     const offenders = files.filter((file) =>
-      readFileSync(file, 'utf8').includes(realBrand.colors.accent),
+      readFileSync(file, 'utf8').includes(realBrand.colors.dark.accent),
     );
 
     expect(offenders.map((file) => relative(SRC_DIR, file))).toEqual([]);

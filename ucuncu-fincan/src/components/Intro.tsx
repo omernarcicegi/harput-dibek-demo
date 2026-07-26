@@ -1,12 +1,12 @@
-// Açılış perdesi: ilk yüklemede kafe adı belirir, sonra siteye geçilir.
-// Toplam süre 1000 ms (kabul kriteri: 1,2 sn'yi geçmemeli).
+// Açılış perdesi: logo belirir, altındaki fincan kahveyle dolar, sonra siteye geçilir.
+// Toplam süre 1160 ms (kabul kriteri: 1,2 sn'yi geçmemeli).
 
 import { useEffect, useState } from 'react';
 import { brand } from '../config/brand';
 import { usePrefersReducedMotion } from '../lib/motion';
 
 const INTRO_SEEN_KEY = 'cafe.introSeen';
-const INTRO_DURATION_MS = 1000;
+const INTRO_DURATION_MS = 1160;
 
 /** sessionStorage kapalıysa (özel mod) uygulama çökmemeli. */
 function hasSeenIntro(): boolean {
@@ -61,16 +61,31 @@ export function Intro({ onDone }: IntroProps) {
 
   return (
     <div
-      className="intro-curtain fixed inset-0 z-100 flex flex-col items-center justify-center bg-page px-6"
+      className="intro-curtain fixed inset-0 z-100 flex flex-col items-center justify-center gap-6 bg-page px-6"
       // Ekran okuyucu perdeyi okumasın; asıl içerik zaten arkada.
       aria-hidden="true"
     >
-      <h1 className="intro-name text-center text-[clamp(3rem,16vw,7rem)] leading-[0.9] text-ink">
+      <img
+        src={brand.logo.small}
+        alt=""
+        width={320}
+        height={320}
+        className="intro-name h-24 w-24 rounded-full"
+      />
+
+      <h1 className="intro-name text-center text-[clamp(2.5rem,13vw,5rem)] text-ink">
         {brand.name}
       </h1>
-      <p className="intro-tagline mt-3 font-accent text-xl text-accent italic">
-        {brand.nameAccent}
-      </p>
+
+      {/* Dolan fincan */}
+      <div className="intro-tagline relative flex items-end">
+        <span className="absolute -right-3 top-3 h-6 w-6 rounded-full border-[3px] border-ink/40" />
+        <div className="relative h-[52px] w-[42px] overflow-hidden rounded-b-[18px] rounded-t-[4px] border-[3px] border-ink/40">
+          <div className="coffee-pour absolute inset-x-0 bottom-0 h-full bg-gold" />
+        </div>
+      </div>
+
+      <p className="intro-tagline font-accent text-lg text-accent italic">{brand.nameAccent}</p>
     </div>
   );
 }

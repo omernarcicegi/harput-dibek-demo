@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { brand } from '../config/brand';
 import { scrollToSection } from '../lib/scroll';
+import { ThemeToggle } from './ThemeToggle';
 
 const NAV_ICONS: Record<string, React.ReactNode> = {
   menu: (
@@ -56,7 +57,7 @@ export function BottomNav() {
       aria-label="Bölüm gezinmesi"
       className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-page/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm"
     >
-      <ul className="mx-auto flex max-w-lg">
+      <ul className="mx-auto flex max-w-lg items-center">
         {brand.nav.map((entry) => {
           const isActive = activeSection === entry.id;
           return (
@@ -75,6 +76,14 @@ export function BottomNav() {
             </li>
           );
         })}
+
+        {/*
+          Tema düğmesi çubuğun sonunda: yüzen düğme olarak dururken
+          iletişim bölümündeki saat tablosunun üstünü kapatıyordu.
+        */}
+        <li className="shrink-0 border-l border-line/60 px-2">
+          <ThemeToggle className="border-0 bg-transparent" />
+        </li>
       </ul>
     </nav>
   );

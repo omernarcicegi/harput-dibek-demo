@@ -122,20 +122,20 @@ describe('menü dönüştürücüleri', () => {
 
   it('kategoriyi yeniden adlandırır', () => {
     const state = createSeedMenu();
-    const next = renameCategory(state, 'cat-tatli', 'Fırından');
+    const next = renameCategory(state, 'cat-pasta', 'Fırından');
 
-    expect(next.categories.find((entry) => entry.id === 'cat-tatli')?.name).toBe('Fırından');
+    expect(next.categories.find((entry) => entry.id === 'cat-pasta')?.name).toBe('Fırından');
   });
 
   it('kategoriyi silince içindeki ürünler de silinir', () => {
     const state = createSeedMenu();
-    const itemCount = selectItemsByCategory(state, 'cat-tatli').length;
+    const itemCount = selectItemsByCategory(state, 'cat-pasta').length;
     expect(itemCount).toBeGreaterThan(0);
 
-    const next = removeCategory(state, 'cat-tatli');
+    const next = removeCategory(state, 'cat-pasta');
 
-    expect(next.categories.some((entry) => entry.id === 'cat-tatli')).toBe(false);
-    expect(next.items.some((entry) => entry.categoryId === 'cat-tatli')).toBe(false);
+    expect(next.categories.some((entry) => entry.id === 'cat-pasta')).toBe(false);
+    expect(next.items.some((entry) => entry.categoryId === 'cat-pasta')).toBe(false);
     expect(next.items).toHaveLength(state.items.length - itemCount);
   });
 
@@ -196,9 +196,9 @@ describe('menü kalıcılığı', () => {
 
   it('sıfırlama başlangıç menüsünü birebir geri getirir', () => {
     const store = freshStore();
-    store.update((state) => removeCategory(state, 'cat-tatli'));
+    store.update((state) => removeCategory(state, 'cat-pasta'));
     store.update((state) => updateItem(state, 'item-espresso', { price: 1 }));
-    expect(store.getSnapshot().categories).toHaveLength(3);
+    expect(store.getSnapshot().categories).toHaveLength(createSeedMenu().categories.length - 1);
 
     store.reset();
 

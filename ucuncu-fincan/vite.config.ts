@@ -5,11 +5,11 @@ import tailwindcss from '@tailwindcss/vite';
 import { brand } from './src/config/brand';
 
 /**
- * brand.ts içindeki renk ve yazı tiplerinin CSS değişken karşılıkları.
+ * brand.ts içindeki renklerin CSS değişken karşılıkları.
  * Tailwind bu değişkenleri okur (src/index.css içindeki @theme bloğuna bak),
  * böylece renk değiştirmek için tek dosya yeterli olur.
  */
-const COLOR_VARIABLES: Record<keyof typeof brand.colors, string> = {
+const COLOR_VARIABLES: Record<keyof typeof brand.colors.dark, string> = {
   bg: '--brand-page',
   surface: '--brand-surface',
   ink: '--brand-ink',
@@ -27,6 +27,9 @@ const FONT_VARIABLES: Record<keyof typeof brand.fonts, string> = {
   accent: '--brand-font-accent',
 };
 
+/** Tarayıcıya tema seçimini React yüklenmeden bildiren anahtar. */
+const THEME_STORAGE_KEY = 'cafe.theme';
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -35,31 +38,62 @@ function escapeHtml(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
+function declarations(palette: Record<string, string>): string {
+  return Object.entries(COLOR_VARIABLES)
+    .map(([key, cssVar]) => `${cssVar}:${palette[key]}`)
+    .join(';');
+}
+
 /**
  * Marka bilgisini derleme sırasında index.html'e gömer.
  *
  * Amaç tek gerçek kaynağı korumak: renkler ve başlık yalnızca brand.ts'te yazılı.
- * Değişkenler HTML'e gömüldüğü için JS yüklenmeden önce de zemin rengi doğru
- * görünür — açılışta beyaz parlama olmaz.
+ * İki palet de gömülür:
+ *   - varsayılan açık
+ *   - cihaz koyu tema istiyorsa (kullanıcı açığı seçmediyse) koyu
+ *   - kullanıcı düğmeyle seçtiyse data-theme her ikisini de ezer
+ *
+ * Değişkenler HTML'e gömüldüğü için JS yüklenmeden önce de doğru zemin görünür.
  */
 function brandHtmlPlugin(): Plugin {
   return {
     name: 'cafe-brand-html',
     transformIndexHtml(html) {
-      const colorDeclarations = Object.entries(COLOR_VARIABLES)
-        .map(([key, cssVar]) => `${cssVar}:${brand.colors[key as keyof typeof brand.colors]}`)
-        .join(';');
+      const light = declarations(brand.colors.light);
+      const dark = declarations(brand.colors.dark);
 
-      const fontDeclarations = Object.entries(FONT_VARIABLES)
+      const fonts = Object.entries(FONT_VARIABLES)
         .map(([key, cssVar]) => `${cssVar}:${brand.fonts[key as keyof typeof brand.fonts]}`)
         .join(';');
 
+      const goldVars = `--brand-gold:${brand.gold.fill};--brand-on-gold:${brand.gold.on}`;
+
+      const themeCss = [
+        `:root{${light};${fonts};${goldVars};color-scheme:light}`,
+        `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){${dark};color-scheme:dark}}`,
+        `:root[data-theme="dark"]{${dark};color-scheme:dark}`,
+        `:root[data-theme="light"]{${light};color-scheme:light}`,
+        `html{background:var(--brand-page)}`,
+      ].join('');
+
+      /*
+        Kaydedilmiş tema tercihini React yüklenmeden uygular.
+        Olmazsa cihaz koyu temadayken kullanıcının seçtiği açık tema
+        bir an için yanlış görünür (tema parlaması).
+      */
+      const themeBoot =
+        `<script>try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');` +
+        `if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>`;
+
       const title = `${brand.name} — ${brand.shortDescription}`;
       const head = [
-        `<style>:root{${colorDeclarations};${fontDeclarations}}html{background:${brand.colors.bg}}</style>`,
+        `<style>${themeCss}</style>`,
+        themeBoot,
         `<title>${escapeHtml(title)}</title>`,
         `<meta name="description" content="${escapeHtml(brand.shortDescription)}" />`,
-        `<meta name="theme-color" content="${brand.colors.bg}" />`,
+        // Tarayıcı arayüz rengi: her tema için ayrı bildirilir.
+        `<meta name="theme-color" media="(prefers-color-scheme: light)" content="${brand.colors.light.bg}" />`,
+        `<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${brand.colors.dark.bg}" />`,
         `<meta property="og:title" content="${escapeHtml(brand.name)}" />`,
         `<meta property="og:description" content="${escapeHtml(brand.tagline)}" />`,
       ].join('\n    ');
@@ -73,7 +107,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), brandHtmlPlugin()],
   build: {
     // Paket boyutunu izleyebilmek için uyarı eşiğini düşük tutuyoruz.
-    chunkSizeWarningLimit: 250,
+    chunkSizeWarningLimit: 300,
   },
   test: {
     environment: 'jsdom',

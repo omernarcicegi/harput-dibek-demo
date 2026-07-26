@@ -25,6 +25,12 @@ export interface MenuItem {
   id: string;
   categoryId: string;
   name: string;
+  /**
+   * Kategori içindeki alt başlık (örn. "Geleneksel Kahvelerimiz").
+   * Menüde bu başlıklar gruplandırma satırı olarak gösterilir.
+   * null ise ürün doğrudan kategorinin altında listelenir.
+   */
+  group: string | null;
   /** Kartta görünen tek cümlelik açıklama. */
   description: string;
   /** TL cinsinden. Kuruş için ondalık kullanılabilir. */

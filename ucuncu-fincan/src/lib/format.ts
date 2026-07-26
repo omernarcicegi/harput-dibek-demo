@@ -7,8 +7,15 @@ const priceFormatter = new Intl.NumberFormat('tr-TR', {
   maximumFractionDigits: 2,
 });
 
-/** 145 → "145 ₺" */
+/**
+ * Fiyatı yayınlanmamış ürünler için gösterilen metin.
+ * Paket ürünlerde raf fiyatı menüde yayınlanmıyor (kaynak menüde de "0").
+ */
+export const PRICE_ON_REQUEST_LABEL = 'Mağazada';
+
+/** 145 → "145 ₺" ; 0 → "Mağazada" */
 export function formatPrice(price: number): string {
+  if (price <= 0) return PRICE_ON_REQUEST_LABEL;
   return `${priceFormatter.format(price)} ₺`;
 }
 

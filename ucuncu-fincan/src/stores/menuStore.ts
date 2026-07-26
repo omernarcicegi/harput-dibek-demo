@@ -43,6 +43,7 @@ function parseMenuItem(raw: unknown): MenuItem | null {
   if (typeof raw.id !== 'string' || raw.id === '') return null;
   if (typeof raw.categoryId !== 'string' || raw.categoryId === '') return null;
   if (typeof raw.name !== 'string') return null;
+  if (raw.group !== null && typeof raw.group !== 'string') return null;
   if (typeof raw.description !== 'string') return null;
   if (typeof raw.price !== 'number' || !Number.isFinite(raw.price)) return null;
   if (typeof raw.imageUrl !== 'string') return null;
@@ -59,6 +60,7 @@ function parseMenuItem(raw: unknown): MenuItem | null {
     id: raw.id,
     categoryId: raw.categoryId,
     name: raw.name,
+    group: (raw.group as string | null) ?? null,
     description: raw.description,
     price: raw.price,
     imageUrl: raw.imageUrl,
@@ -112,6 +114,8 @@ export function selectItemsByCategory(state: MenuState, categoryId: string): Men
 export interface NewItemInput {
   categoryId: string;
   name: string;
+  /** Kategori içindeki alt başlık; boş bırakılabilir. */
+  group?: string | null;
   description: string;
   price: number;
   imageUrl: string;
@@ -130,6 +134,7 @@ function nextItemOrder(state: MenuState, categoryId: string): number {
 export function addItem(state: MenuState, input: NewItemInput): MenuState {
   const item: MenuItem = {
     ...input,
+    group: input.group ?? null,
     id: createId('item'),
     soldOut: false,
     order: nextItemOrder(state, input.categoryId),

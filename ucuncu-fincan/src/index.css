@@ -16,6 +16,9 @@
   --color-highlight: var(--brand-highlight);
   --color-line: var(--brand-line);
   --color-on-photo: var(--brand-on-photo);
+  /* Logo sarısı — iki temada da aynı; üstüne daima koyu metin gelir. */
+  --color-gold: var(--brand-gold);
+  --color-on-gold: var(--brand-on-gold);
 
   --font-display: var(--brand-font-display);
   --font-body: var(--brand-font-body);
@@ -135,10 +138,25 @@ h2,
 h3 {
   font-family: var(--font-display);
   font-weight: 400;
-  line-height: 0.92;
+  /*
+    Türkçe büyük harflerde Ü, Ö, İ, Ç gibi aksanlı gliflerin üstü ve altı
+    normal büyük harf yüksekliğinin dışına taşar. 1'in altındaki satır
+    yüksekliği bu taşmaları komşu satırların üstüne bindiriyordu
+    (masaüstünde 128 px'lik başlıkta bariz). 1.02 sıkı poster görünümünü
+    korurken aksanlara yer bırakıyor.
+  */
+  line-height: 1.12;
   letter-spacing: 0.01em;
   text-transform: uppercase;
   margin: 0;
+  /*
+    Anton'un glifleri satır kutusunu taşırıyor: Ç/Ş çengelleri altta,
+    Ü/Ö/İ noktaları üstte kalıyor. Punto ile ölçeklenen bu iç boşluk,
+    başlığın komşu satırlara değmesini engelliyor.
+  */
+  padding-block: 0.06em;
+  /* Uzun tek kelimeler dar ekranda kutudan taşmasın. */
+  overflow-wrap: break-word;
 }
 
 /* Klavye kullanıcısı için görünür odak — asla kaldırılmaz. */
@@ -197,8 +215,9 @@ img {
   }
 }
 
+/* Fincan 880 ms'de dolar, perde hemen ardından kalkar: toplam 1160 ms. */
 .intro-curtain {
-  animation: intro-curtain-out 260ms ease-in 740ms forwards;
+  animation: intro-curtain-out 260ms ease-in 900ms forwards;
 }
 
 .intro-name {
@@ -222,6 +241,62 @@ img {
 .press:active {
   transform: scale(0.97);
   box-shadow: 0 10px 24px -8px rgb(42 33 27 / 0.35);
+}
+
+/* ==========================================================================
+   KAHVE DOLDURMA
+   Ortak kural: dolum yalnızca `transform: scaleY()` ile yapılır — yükseklik
+   animasyonu yok, böylece mobilde 60 fps korunur.
+   --fill değeri 0–1 arasıdır ve JS tarafından güncellenir.
+   ========================================================================== */
+.coffee-liquid {
+  transform-origin: bottom center;
+  transform: scaleY(var(--fill, 0));
+  /* Kaydırmayı birebir takip etsin diye kısa bir yumuşatma yeter. */
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
+/* Açılış perdesindeki fincan kendi kendine dolar. */
+@keyframes coffee-pour {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.coffee-pour {
+  transform-origin: bottom center;
+  animation: coffee-pour 760ms cubic-bezier(0.4, 0, 0.2, 1) 120ms both;
+}
+
+/* Sıvının üstündeki ince parlama — dolum hissini güçlendirir. */
+.coffee-crema {
+  transform-origin: bottom center;
+  transform: scaleY(var(--fill, 0));
+  transition: transform 120ms linear;
+}
+
+/*
+   Hikâye panellerinde kahve dalgası: panel görünüme girdiğinde alttan
+   yukarı doğru sıcak bir ton yükselir.
+*/
+.panel-wash {
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-gold) 22%, transparent) 0%,
+    transparent 100%
+  );
+}
+
+.reveal[data-visible='true'] .panel-wash,
+.panel-wash[data-visible='true'] {
+  transform: scaleY(1);
 }
 
 /* ==========================================================================
@@ -342,8 +417,24 @@ img {
   .intro-tagline,
   .sheet-enter,
   .backdrop-enter,
-  .category-enter {
+  .category-enter,
+  .coffee-pour {
     animation: none !important;
+  }
+
+  /*
+    Kaydırma göstergesi bir ANİMASYON değil, bilgidir: dolum oranı
+    kaydırma konumunu gösterir, o yüzden korunur — yalnızca yumuşatma kalkar.
+  */
+  .coffee-liquid,
+  .coffee-crema {
+    transition: none !important;
+  }
+
+  /* Panel dalgası tamamen dekoratif: hareket yerine sabit durur. */
+  .panel-wash {
+    transition: none !important;
+    transform: scaleY(1) !important;
   }
 
   .press {

@@ -1,4 +1,4 @@
-// Menü: kategori sekmeleri ve ürün kartları.
+// Menü: kategori sekmeleri, alt grup başlıkları ve ürün kartları.
 // Karta dokununca ürün detayı alttan açılan panelde gösterilir.
 
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -11,7 +11,7 @@ import { BottomSheet } from '../components/BottomSheet';
 import type { ItemBadge, MenuItem } from '../types';
 
 const BADGE_STYLES: Record<ItemBadge, string> = {
-  yeni: 'bg-accent text-on-accent',
+  yeni: 'bg-gold text-on-gold',
   'cok-satan': 'bg-ink text-page',
   vegan: 'bg-highlight text-page',
 };
@@ -24,6 +24,17 @@ function Badge({ badge }: { badge: ItemBadge }) {
       {BADGE_LABELS[badge]}
     </span>
   );
+}
+
+/** Ürünleri alt gruplara böler; grup sırası ürün sırasını korur. */
+function groupItems(items: MenuItem[]): { group: string | null; items: MenuItem[] }[] {
+  const blocks: { group: string | null; items: MenuItem[] }[] = [];
+  for (const item of items) {
+    const last = blocks[blocks.length - 1];
+    if (last && last.group === item.group) last.items.push(item);
+    else blocks.push({ group: item.group, items: [item] });
+  }
+  return blocks;
 }
 
 export function MenuSection() {
@@ -45,6 +56,7 @@ export function MenuSection() {
     () => (activeCategoryId ? selectItemsByCategory(menu, activeCategoryId) : []),
     [menu, activeCategoryId],
   );
+  const blocks = useMemo(() => groupItems(items), [items]);
 
   // Panel açıkken ürün adminde güncellenirse gösterilen bilgi de tazelensin.
   const liveSelectedItem = useMemo(
@@ -78,7 +90,12 @@ export function MenuSection() {
       <div
         role="tablist"
         aria-label="Menü kategorileri"
-        className="no-scrollbar -mx-5 mt-8 flex gap-2 overflow-x-auto px-5 sm:-mx-8 sm:px-8"
+        /*
+          Yapışkan şerit: kategoriler uzun menüde her zaman erişilebilir olsun.
+          Zemin opak olmalı — şeffaf bırakılınca altından geçen kartlar
+          yazıların arasından görünüyordu.
+        */
+        className="no-scrollbar sticky top-0 z-20 -mx-5 mt-8 flex gap-2 overflow-x-auto border-b border-line/60 bg-page px-5 py-3 sm:-mx-8 sm:px-8"
       >
         {categories.map((category, index) => {
           const isActive = category.id === activeCategoryId;
@@ -98,7 +115,7 @@ export function MenuSection() {
               onKeyDown={(event) => handleTabKeyDown(event, index)}
               className={`press min-h-11 shrink-0 rounded-full px-5 text-sm font-semibold whitespace-nowrap transition-colors ${
                 isActive
-                  ? 'bg-ink text-page'
+                  ? 'bg-gold text-on-gold shadow-md'
                   : 'border border-line bg-surface text-muted hover:text-ink'
               }`}
             >
@@ -115,55 +132,72 @@ export function MenuSection() {
         id={`panel-${activeCategoryId}`}
         role="tabpanel"
         aria-labelledby={`tab-${activeCategoryId}`}
-        className="category-enter mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
+        className="category-enter mt-6"
       >
         {items.length === 0 ? (
           <p className="text-muted">Bu kategoride henüz ürün yok.</p>
         ) : (
-          items.map((item, index) => (
-            <Reveal key={item.id} index={index}>
-              <button
-                type="button"
-                onClick={() => setSelectedItem(item)}
-                className="press w-full overflow-hidden rounded-2xl border border-line bg-surface text-left shadow-sm"
-              >
-                <div className="relative">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    width={600}
-                    height={450}
-                    loading="lazy"
-                    decoding="async"
-                    className={`aspect-[4/3] w-full object-cover ${
-                      item.soldOut ? 'opacity-45 grayscale' : ''
-                    }`}
-                  />
+          blocks.map((block) => (
+            <div key={block.group ?? 'diger'} className="mt-8 first:mt-0">
+              {block.group && (
+                <Reveal>
+                  <h3 className="mb-4 flex items-center gap-3 text-xl text-highlight">
+                    <span className="h-px w-6 shrink-0 bg-gold" aria-hidden="true" />
+                    {block.group}
+                  </h3>
+                </Reveal>
+              )}
 
-                  {item.badge && (
-                    <span className="absolute top-3 left-3">
-                      <Badge badge={item.badge} />
-                    </span>
-                  )}
+              <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
+                {block.items.map((item, index) => (
+                  <Reveal key={item.id} index={index}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedItem(item)}
+                      className="press h-full w-full overflow-hidden rounded-2xl border border-line bg-surface text-left shadow-sm"
+                    >
+                      <div className="relative">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          width={480}
+                          height={480}
+                          loading="lazy"
+                          decoding="async"
+                          className={`aspect-square w-full object-cover ${
+                            item.soldOut ? 'opacity-45 grayscale' : ''
+                          }`}
+                        />
 
-                  {item.soldOut && (
-                    <span className="absolute top-3 right-3 rounded-full bg-ink px-3 py-1 text-[11px] font-semibold tracking-wide text-page uppercase">
-                      Tükendi
-                    </span>
-                  )}
-                </div>
+                        {item.badge && (
+                          <span className="absolute top-2 left-2">
+                            <Badge badge={item.badge} />
+                          </span>
+                        )}
 
-                <div className="p-4">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="text-2xl leading-tight text-ink">{item.name}</h3>
-                    <span className="shrink-0 font-display text-xl text-accent">
-                      {formatPrice(item.price)}
-                    </span>
-                  </div>
-                  <p className="mt-1.5 text-sm text-muted">{item.description}</p>
-                </div>
-              </button>
-            </Reveal>
+                        {item.soldOut && (
+                          <span className="absolute top-2 right-2 rounded-full bg-ink px-2.5 py-1 text-[10px] font-semibold tracking-wide text-page uppercase">
+                            Tükendi
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="p-3 sm:p-4">
+                        <h4 className="font-display text-lg leading-tight text-ink uppercase sm:text-xl">
+                          {item.name}
+                        </h4>
+                        <p className="mt-1 line-clamp-2 text-xs text-muted sm:text-sm">
+                          {item.description}
+                        </p>
+                        <span className="mt-2 inline-block font-display text-lg text-accent sm:text-xl">
+                          {formatPrice(item.price)}
+                        </span>
+                      </div>
+                    </button>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
           ))
         )}
       </div>
@@ -178,26 +212,33 @@ export function MenuSection() {
             <img
               src={liveSelectedItem.imageUrl}
               alt={liveSelectedItem.name}
-              width={600}
-              height={450}
-              className="aspect-[4/3] w-full rounded-2xl object-cover"
+              width={480}
+              height={480}
+              className="mx-auto aspect-square w-full max-w-xs rounded-2xl object-cover"
             />
 
             <div className="mt-5 flex items-start justify-between gap-4">
-              <h3 className="text-4xl leading-none text-ink">{liveSelectedItem.name}</h3>
-              <span className="shrink-0 font-display text-3xl text-accent">
+              <h3 className="text-3xl text-ink sm:text-4xl">{liveSelectedItem.name}</h3>
+              <span className="shrink-0 font-display text-2xl text-accent sm:text-3xl">
                 {formatPrice(liveSelectedItem.price)}
               </span>
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              {liveSelectedItem.badge && <Badge badge={liveSelectedItem.badge} />}
-              {liveSelectedItem.soldOut && (
-                <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-semibold tracking-wide text-page uppercase">
-                  Tükendi
-                </span>
-              )}
-            </div>
+            {(liveSelectedItem.group || liveSelectedItem.badge || liveSelectedItem.soldOut) && (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                {liveSelectedItem.group && (
+                  <span className="text-xs font-semibold tracking-[0.2em] text-highlight uppercase">
+                    {liveSelectedItem.group}
+                  </span>
+                )}
+                {liveSelectedItem.badge && <Badge badge={liveSelectedItem.badge} />}
+                {liveSelectedItem.soldOut && (
+                  <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-semibold tracking-wide text-page uppercase">
+                    Tükendi
+                  </span>
+                )}
+              </div>
+            )}
 
             <p className="mt-4 text-base text-ink">{liveSelectedItem.description}</p>
 

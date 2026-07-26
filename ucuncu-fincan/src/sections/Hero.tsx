@@ -28,6 +28,16 @@ export function Hero() {
       <div className="photo-scrim absolute inset-x-0 bottom-0 h-[78%]" aria-hidden="true" />
 
       <div className="relative px-5 pb-32 sm:px-8 md:pb-36">
+        <img
+          src={brand.logo.small}
+          alt={brand.logo.alt}
+          width={320}
+          height={320}
+          fetchPriority="high"
+          decoding="async"
+          className="mb-4 h-20 w-20 rounded-full shadow-lg sm:h-24 sm:w-24"
+        />
+
         <p className="mb-3 text-xs font-semibold tracking-[0.28em] text-highlight uppercase">
           {brand.hero.eyebrow}
         </p>

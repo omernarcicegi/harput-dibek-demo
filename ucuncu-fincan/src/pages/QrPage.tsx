@@ -19,7 +19,9 @@ export default function QrPage() {
       errorCorrectionLevel: 'M',
       margin: 1,
       width: 900,
-      color: { dark: brand.colors.ink, light: brand.colors.bg },
+      // Baskıda beyaz kağıda basılır: QR her zaman koyu/açık üretilir,
+      // koyu temada da taranabilir kalsın diye.
+      color: { dark: brand.colors.light.ink, light: brand.colors.light.bg },
     })
       .then((url) => {
         if (!cancelled) setQrDataUrl(url);
@@ -61,7 +63,7 @@ export default function QrPage() {
           <p className="text-[10px] font-semibold tracking-[0.3em] text-highlight uppercase">
             {brand.qrCard.kicker}
           </p>
-          <h1 className="mt-2 text-[2.6rem] leading-[0.92] text-ink">{brand.name}</h1>
+          <h1 className="mt-2 text-[2.6rem] text-ink">{brand.name}</h1>
           <p className="mt-1 font-accent text-lg text-accent italic">{brand.nameAccent}</p>
         </div>
 

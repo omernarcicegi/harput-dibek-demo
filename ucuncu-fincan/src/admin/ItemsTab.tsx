@@ -20,6 +20,7 @@ interface FormState {
   id: string | null;
   categoryId: string;
   name: string;
+  group: string;
   description: string;
   price: string;
   imageUrl: string;
@@ -32,6 +33,7 @@ function emptyForm(categoryId: string): FormState {
     id: null,
     categoryId,
     name: '',
+    group: '',
     description: '',
     price: '',
     imageUrl: BUNDLED_IMAGES[0] ?? '',
@@ -45,6 +47,7 @@ function formFromItem(item: MenuItem): FormState {
     id: item.id,
     categoryId: item.categoryId,
     name: item.name,
+    group: item.group ?? '',
     description: item.description,
     // Türkçe girişte ondalık ayırıcı virgül.
     price: String(item.price).replace('.', ','),
@@ -79,6 +82,13 @@ export function ItemsTab() {
     [menu, currentCategoryId],
   );
 
+  /** Menüde hâlihazırda kullanılan alt başlıklar — form önerisi için. */
+  const existingGroups = useMemo(
+    () =>
+      [...new Set(menu.items.map((item) => item.group).filter((g): g is string => !!g))].sort(),
+    [menu.items],
+  );
+
   function handleSubmit() {
     if (!form) return;
 
@@ -94,6 +104,7 @@ export function ItemsTab() {
     const payload = {
       categoryId: form.categoryId,
       name: form.name.trim(),
+      group: form.group.trim() === '' ? null : form.group.trim(),
       description: form.description.trim(),
       price: price as number,
       imageUrl: form.imageUrl,
@@ -162,6 +173,26 @@ export function ItemsTab() {
               value={form.name}
               onChange={(event) => setForm({ ...form, name: event.target.value })}
             />
+          </Field>
+
+          <Field
+            label="Alt başlık"
+            htmlFor="item-group"
+            hint="Menüde ürünün altında listeleneceği grup. Boş bırakılabilir."
+          >
+            <TextInput
+              id="item-group"
+              list="group-options"
+              value={form.group}
+              placeholder="Örn. Geleneksel Kahvelerimiz"
+              onChange={(event) => setForm({ ...form, group: event.target.value })}
+            />
+            {/* Mevcut gruplar öneri olarak sunulur; yenisi de yazılabilir. */}
+            <datalist id="group-options">
+              {existingGroups.map((group) => (
+                <option key={group} value={group} />
+              ))}
+            </datalist>
           </Field>
 
           <Field label="Açıklama" htmlFor="item-desc" hint="Kartta görünen tek cümle.">
@@ -276,6 +307,11 @@ export function ItemsTab() {
                 </span>
               </div>
 
+              {item.group && (
+                <p className="mt-0.5 truncate text-[11px] tracking-wide text-highlight uppercase">
+                  {item.group}
+                </p>
+              )}
               <p className="mt-0.5 truncate text-sm text-muted">{item.description}</p>
 
               <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px]">

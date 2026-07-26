@@ -1,8 +1,8 @@
 // Sinematik hikâye panelleri.
 //
 // Paneller yapışkan (sticky) olarak yığılır: bir sonraki panel öncekinin
-// üstüne kayar. Referans videodaki katmanlı geçişin GPU dostu karşılığı —
-// yalnızca sayfa kaydırması kullanılır, JS ile konum hesabı yapılmaz.
+// üstüne kayar. Panel görünüme girdiğinde alttan yukarı doğru sıcak bir
+// kahve dalgası yükselir (yalnızca transform ile).
 
 import { brand } from '../config/brand';
 import { Reveal } from '../lib/motion';
@@ -13,7 +13,7 @@ export function StoryPanels() {
       {brand.storyPanels.map((panel) => (
         <section
           key={panel.id}
-          className="snap-panel relative flex min-h-[100dvh] flex-col justify-end overflow-hidden"
+          className="snap-panel relative flex min-h-[100dvh] flex-col justify-end overflow-hidden bg-page"
           aria-label={panel.title}
         >
           <img
@@ -25,6 +25,11 @@ export function StoryPanels() {
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
+
+          {/* Kahve dalgası — dekoratif, panel görünüme girince yükselir. */}
+          <Reveal className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3">
+            <div className="panel-wash h-full w-full" aria-hidden="true" />
+          </Reveal>
 
           <div className="photo-scrim absolute inset-x-0 bottom-0 h-[72%]" aria-hidden="true" />
 

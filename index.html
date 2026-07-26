@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/harput-dibek-demo/favicon.svg" />
+    <!-- viewport-fit=cover: iPhone'da alt gezinme çubuğu güvenli alana oturabilsin -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <!-- Yazı tipleri projede barındırılır: çevrimdışı çalışsın ve
+         Lighthouse'ta dış istek beklenmesin diye. -->
+    <link rel="preload" href="/harput-dibek-demo/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/harput-dibek-demo/fonts/barlow-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/harput-dibek-demo/fonts/anton-latin-ext.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Marka bilgisi (renkler, başlık, meta) derleme sırasında
+         brand.ts'ten buraya gömülür — vite.config.ts içindeki eklentiye bak. -->
+    <style>:root{--brand-page:#FBF6EC;--brand-surface:#F3E9D6;--brand-ink:#241A12;--brand-muted:#6B5946;--brand-accent:#8A5A0B;--brand-on-accent:#FFF8EC;--brand-highlight:#7A5A16;--brand-line:#DFD0B4;--brand-on-photo:#FFF8EC;--brand-font-display:'Anton', 'Arial Narrow', sans-serif;--brand-font-body:'Barlow', system-ui, -apple-system, sans-serif;--brand-font-accent:'Playfair Display', Georgia, serif;--brand-gold:#FCCC30;--brand-on-gold:#2A1B08;color-scheme:light}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--brand-page:#16110D;--brand-surface:#211A14;--brand-ink:#F4EADA;--brand-muted:#B9A991;--brand-accent:#FCCC30;--brand-on-accent:#2A1B08;--brand-highlight:#E8B94A;--brand-line:#3A2E24;--brand-on-photo:#FFF8EC;color-scheme:dark}}:root[data-theme="dark"]{--brand-page:#16110D;--brand-surface:#211A14;--brand-ink:#F4EADA;--brand-muted:#B9A991;--brand-accent:#FCCC30;--brand-on-accent:#2A1B08;--brand-highlight:#E8B94A;--brand-line:#3A2E24;--brand-on-photo:#FFF8EC;color-scheme:dark}:root[data-theme="light"]{--brand-page:#FBF6EC;--brand-surface:#F3E9D6;--brand-ink:#241A12;--brand-muted:#6B5946;--brand-accent:#8A5A0B;--brand-on-accent:#FFF8EC;--brand-highlight:#7A5A16;--brand-line:#DFD0B4;--brand-on-photo:#FFF8EC;color-scheme:light}html{background:var(--brand-page)}</style>
+    <script>try{var t=localStorage.getItem('cafe.theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+    <title>Harput Dibek — Dibek kahvesi, Türk kahvesi ve dünya kahveleri</title>
+    <meta name="description" content="Dibek kahvesi, Türk kahvesi ve dünya kahveleri" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FBF6EC" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#16110D" />
+    <meta property="og:title" content="Harput Dibek" />
+    <meta property="og:description" content="Dibek taşında dövülen çekirdek, kısık ateşte pişen gelenek." />
+    <script type="module" crossorigin src="/harput-dibek-demo/assets/index-CEcxzcBV.js"></script>
+    <link rel="stylesheet" crossorigin href="/harput-dibek-demo/assets/index-C8DdYELe.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

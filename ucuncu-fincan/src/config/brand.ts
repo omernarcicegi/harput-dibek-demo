@@ -39,7 +39,7 @@ export const brand = {
   },
 
   /** Yayınlanan adres. QR kodu bu adresi kodlar. */
-  siteUrl: 'https://harput-dibek-demo.vercel.app',
+  siteUrl: 'https://omernarcicegi.github.io/harput-dibek-demo/',
 
   // --- Renk paleti ---------------------------------------------------------
   // İki tema da burada tanımlı. Değerler derleme sırasında CSS değişkenlerine
@@ -99,6 +99,11 @@ export const brand = {
   intro: {
     curtainBg: '#1A120C',
     curtainInk: '#FFF3D6',
+    /**
+     * true  → açılış her sayfa yüklemesinde oynar (satış demosu için).
+     * false → oturumda yalnızca bir kez oynar (sessionStorage ile).
+     */
+    replayEveryLoad: true,
   },
 
   // --- Hero ----------------------------------------------------------------

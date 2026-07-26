@@ -20,11 +20,28 @@ function subscribe(listener: () => void): () => void {
   };
 }
 
+/**
+ * Sitenin sunulduğu taban yol. Kökte "/", GitHub Pages gibi alt dizinde
+ * "/depo-adi/" olur. Vite derleme sırasında doldurur.
+ */
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+/** Taban yolu çıkarıp uygulama içi yolu verir. */
+function stripBase(pathname: string): string {
+  if (BASE && pathname.startsWith(BASE)) return pathname.slice(BASE.length) || '/';
+  return pathname;
+}
+
 function getPathname(): string {
   if (typeof window === 'undefined') return '/';
   // Sondaki eğik çizgiyi at, böylece "/admin" ve "/admin/" aynı rotadır.
-  const path = window.location.pathname.replace(/\/+$/, '');
+  const path = stripBase(window.location.pathname).replace(/\/+$/, '');
   return path === '' ? '/' : path;
+}
+
+/** Uygulama içi yolu tarayıcıya verilecek tam yola çevirir. */
+export function href(to: string): string {
+  return `${BASE}${to}`.replace(/\/{2,}/g, '/') || '/';
 }
 
 /** Geçerli yolu döndürür ve değiştiğinde bileşeni yeniden render eder. */
@@ -35,7 +52,7 @@ export function useRoute(): string {
 /** Sayfa yenilemeden başka bir yola gider. */
 export function navigate(to: string): void {
   if (getPathname() === to) return;
-  window.history.pushState({}, '', to);
+  window.history.pushState({}, '', href(to));
   notify();
   window.scrollTo(0, 0);
 }
@@ -58,7 +75,7 @@ export function Link({ to, children, className }: LinkProps) {
   );
 
   return (
-    <a href={to} onClick={handleClick} className={className}>
+    <a href={href(to)} onClick={handleClick} className={className}>
       {children}
     </a>
   );

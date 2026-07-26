@@ -194,8 +194,7 @@ img {
 }
 
 /* ==========================================================================
-   AÇILIŞ PERDESİ
-   Toplam 1000 ms — kabul kriterindeki 1,2 sn sınırının altında.
+   AÇILIŞ PERDESİ — ortak kare adımları
    ========================================================================== */
 @keyframes intro-name-in {
   from {
@@ -218,7 +217,7 @@ img {
 /* ==========================================================================
    AÇILIŞ — DÖKÜLEN KAHVE PERDESİ
    Sıra: akıntı yukarıdan aşağı iner → ekranı basar → perde kalkar.
-   Toplam 1120 ms; hepsi transform/opacity ile.
+   Toplam 2200 ms; hepsi transform/opacity ile.
    ========================================================================== */
 
 /* Akıntı yukarıdan aşağı uzar. */
@@ -255,15 +254,22 @@ img {
   }
 }
 
+/*
+  Zamanlama (toplam ~2200 ms — Intro.tsx içindeki INTRO_DURATION_MS ile eşleşmeli):
+    200 →1200  akıntı iner
+   1150→1450  logo ve ad söner
+   1300→1800  akıntı ekranı basar
+   1800→2200  perde kalkar
+*/
 .pour-stream {
   transform-origin: top center;
   animation:
-    pour-down 420ms cubic-bezier(0.55, 0, 0.55, 1) 80ms both,
-    pour-flood 300ms cubic-bezier(0.6, 0, 0.9, 0.7) 520ms both;
+    pour-down 1000ms cubic-bezier(0.45, 0, 0.55, 1) 200ms both,
+    pour-flood 500ms cubic-bezier(0.6, 0, 0.9, 0.7) 1300ms both;
 }
 
 .intro-droplet {
-  animation: droplet-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: droplet-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /*
@@ -278,20 +284,20 @@ img {
 }
 
 .intro-content {
-  animation: intro-content-out 220ms ease-in 470ms both;
+  animation: intro-content-out 300ms ease-in 1150ms both;
 }
 
 /* Perde, akıntı ekranı bastıktan sonra kalkar. */
 .intro-curtain {
-  animation: intro-curtain-out 300ms ease-in 820ms forwards;
+  animation: intro-curtain-out 400ms ease-in 1800ms forwards;
 }
 
 .intro-name {
-  animation: intro-name-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: intro-name-in 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .intro-tagline {
-  animation: intro-name-in 460ms cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
+  animation: intro-name-in 560ms cubic-bezier(0.16, 1, 0.3, 1) 260ms both;
 }
 
 /* ==========================================================================

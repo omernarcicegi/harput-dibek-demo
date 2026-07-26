@@ -1,24 +1,34 @@
 // Açılış perdesi: koyu zemine yukarıdan kahve dökülür, akıntı ekranı basar
 // ve perde kalkarak siteyi açar.
 //
-// Toplam süre 1120 ms (kabul kriteri: 1,2 sn'yi geçmemeli).
-// Tüm hareketler yalnızca transform ve opacity ile yapılır.
+// Toplam süre 2200 ms. Tüm hareketler yalnızca transform ve opacity ile yapılır.
+//
+// Not: ilk sürümde açılış 1,2 sn ile sınırlıydı ve oturumda bir kez oynuyordu.
+// Satış demosunda çok hızlı geçtiği ve her açılışta görünmesi istendiği için
+// süre uzatıldı, tekrar davranışı brand.intro.replayEveryLoad ile ayarlanıyor.
 
 import { useEffect, useState } from 'react';
 import { brand } from '../config/brand';
 import { usePrefersReducedMotion } from '../lib/motion';
 
 const INTRO_SEEN_KEY = 'cafe.introSeen';
-const INTRO_DURATION_MS = 1120;
+
+/**
+ * Perdenin ekranda kalma süresi.
+ * DİKKAT: bu değer src/index.css'teki "AÇILIŞ — DÖKÜLEN KAHVE PERDESİ"
+ * bloğundaki animasyon zamanlamasının toplamıyla aynı olmalı.
+ * Şu an: akıntı 1000ms + basma 500ms + perde 400ms ≈ 2200ms.
+ */
+const INTRO_DURATION_MS = 2200;
 
 /** Akıntının çevresine saçılan damlacıklar: [sol%, üst%, çap(px), gecikme(ms)] */
 const DROPLETS: [number, number, number, number][] = [
-  [38, 34, 10, 240],
-  [63, 30, 7, 300],
-  [33, 52, 6, 340],
-  [68, 56, 9, 280],
-  [42, 66, 5, 380],
-  [59, 70, 7, 420],
+  [38, 34, 10, 520],
+  [63, 30, 7, 640],
+  [33, 52, 6, 760],
+  [68, 56, 9, 700],
+  [42, 66, 5, 880],
+  [59, 70, 7, 960],
 ];
 
 /** sessionStorage kapalıysa (özel mod) uygulama çökmemeli. */
@@ -40,11 +50,15 @@ function markIntroSeen(): void {
 
 /**
  * Açılış perdesinin gösterilip gösterilmeyeceğine karar verir.
- * Aynı oturumda ikinci kez ve hareket azaltma açıkken hiç gösterilmez.
+ * Hareket azaltma açıkken hiç gösterilmez.
+ * `brand.intro.replayEveryLoad` false ise oturumda yalnızca bir kez oynar.
  */
 export function useIntro(): { showIntro: boolean; dismissIntro: () => void } {
   const prefersReduced = usePrefersReducedMotion();
-  const [showIntro, setShowIntro] = useState(() => !hasSeenIntro());
+  // Satış demosunda açılış her yüklemede görünsün diye yapılandırılabilir.
+  const [showIntro, setShowIntro] = useState<boolean>(
+    () => brand.intro.replayEveryLoad || !hasSeenIntro(),
+  );
 
   useEffect(() => {
     if (prefersReduced && showIntro) {

@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { useRoute } from './lib/router';
+import { Link, useRoute } from './lib/router';
 import CustomerPage from './pages/CustomerPage';
 
 // Admin ve QR sayfaları ayrı parçalara bölünür: QR'dan gelen müşteri
@@ -11,12 +11,12 @@ function NotFound() {
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-5 px-6 text-center">
       <h1 className="text-5xl text-ink">Sayfa bulunamadı</h1>
-      <a
-        href="/"
+      <Link
+        to="/"
         className="press inline-flex min-h-12 items-center rounded-full bg-accent px-6 font-semibold text-on-accent"
       >
         Ana sayfaya dön
-      </a>
+      </Link>
     </div>
   );
 }

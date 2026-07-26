@@ -20,8 +20,8 @@ export function AboutSection() {
             <img
               src={photo.image}
               alt={photo.alt}
-              width={800}
-              height={800}
+              width={512}
+              height={512}
               loading="lazy"
               decoding="async"
               className="aspect-square w-full rounded-2xl object-cover shadow-sm"

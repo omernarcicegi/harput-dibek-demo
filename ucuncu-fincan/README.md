@@ -285,6 +285,32 @@ yönetim panelinin kodunu indirmez.
 
 ---
 
+## Doğrulama (geliştirici)
+
+Değişiklikten sonra siteyi **gerçek mobil genişlikte** kontrol et:
+
+```bash
+# 1) Chrome'u hata ayıklama portuyla başlat
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu --no-sandbox --remote-debugging-port=9222 \
+  --user-data-dir=/tmp/cdp-profile about:blank &
+
+# 2) Siteyi sun ve doğrula
+npm run preview &
+node scripts/verify.mjs                 # yerel
+node scripts/verify.mjs https://omernarcicegi.github.io/harput-dibek-demo/
+```
+
+Yatay taşma, 44 px dokunma hedefleri, ekranda gizli kalan içerik ve
+yüklenmeyen görselleri kontrol eder.
+
+> `chrome --headless --window-size=375,812 --screenshot` **kullanma** —
+> düzeni ~512 px'e göre hesaplayıp görüntüyü kırpıyor, yanıltıcı sonuç
+> veriyor. Sayfayı iframe'e gömmek de olmaz: headless'ta iframe içinde
+> IntersectionObserver hiç tetiklenmiyor.
+
+---
+
 ## Ölçümler
 
 Üretim derlemesi üzerinde ölçüldü (`npm run build` + `npm run preview`,
